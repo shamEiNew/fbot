@@ -2,6 +2,7 @@ import tweepy
 import logging
 from config import create_api
 import time
+import credentials
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
