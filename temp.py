@@ -15,22 +15,28 @@ def check_mentions(api, since_id):
         new_since_id = max(tweet.id, new_since_id)
         if tweet.in_reply_to_status_id is not None:
             continue
-        logger.info(f"Answering to {tweet.user.name}")
-        print(prev_tweets(api, tweet.user.name, tweet.id))
-        if api.me().name in prev_tweets(api, tweet.user.name, tweet.id):
+        #print(prev_tweets(api, api.get_status(tweet.id).screen_name, tweet.id))
+        if api.me().screen_name not in prev_tweets(api, api.get_status(tweet.id).user.screen_name, str(tweet.id)):
+            logger.info(f"Answering to {tweet.user.name}")
             api.update_status(
-                status="u are absoluteyly amazing \U0001F970",
+                status="u are absolutely amazing \U0001F970",
                 in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True
                 )
     return new_since_id
 
 def prev_tweets(api, name, tweet_id):
-    replies=[]
-    for tweet in tweepy.Cursor(api.search,q='to:'+name, result_type='recent', timeout=999999).items(50):
-        if tweet.in_reply_to_status_id is not None:
+    s = []
+    for tweet in tweepy.Cursor(api.search,q='to:'+name, result_type='recent', timeout=999999).items(5):
+        #print(type(tweet))
+        if hasattr(tweet, 'in_reply_to_status_id_str'):
             if (tweet.in_reply_to_status_id_str==tweet_id):
-                replies.append(tweet.user.name)
-    return replies
+                status = api.get_status(int(tweet_id))
+                #print(status)
+                s.append(status.user.screen_name)
+                print(status.user.screen_name)
+                #user_name_tweet(s)
+    return s
+    #return s
 
 def mentions_main():
     api = create_api()
