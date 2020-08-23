@@ -8,10 +8,10 @@ import random as rn
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-consumer_key = "qR2I353OwXANf1RhsWg223T0l"
-consumer_secret = "CZV5CNfGWSqOLvuyZcx0y36JmlLfeBIJyWyGPlhPLVPPMYb2Jw"
-access_token = "1296440180501393408-lKxcrko2KRcXpGrjc6u0vQ2D2nrVXq"
-access_token_secret = "pwUYPmuk0xTCMbu0qHuhW1mbZLiCZ34I9buNaU1uhUz7g"
+consumer_key = environ['API_KEY']
+consumer_secret = environ['API_SECRET_KEY']
+access_token = environ['ACCESS_TOKEN']
+access_token_secret = environ['ACESS_TOKEN_SECRET']
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
