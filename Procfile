@@ -1,2 +1,2 @@
-web : python server.py
-worker : python fbot.py
+web: python server.py
+worker: python fbot.py
