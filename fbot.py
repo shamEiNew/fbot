@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
 def check_mentions(api, since_id):
-    quotes = open("quotes.txt", "r")
+    quotes = open("quotes.txt", "r", encoding='utf-8')
     logger.info("Retrieving mentions")
     new_since_id = since_id
     for tweet in tweepy.Cursor(api.mentions_timeline,
@@ -18,7 +18,7 @@ def check_mentions(api, since_id):
         m = api.get_status(tweet.id).user.screen_name
         if follow_followers(api, m) == True:
             try:
-                logger.info(f"following m")
+                logger.info(f"following {m}")
                 api.create_friendship(m)
             except tweepy.TweepError:
                 logger.info(f"you can't follow {m}!")
@@ -66,7 +66,7 @@ def mentions_main():
     while True:
         since_id = check_mentions(api, since_id)
         logger.info("Waiting...")
-        time.sleep(15)
+        time.sleep(60*60*4)
 
 if (__name__ == "__main__"):
     mentions_main()
