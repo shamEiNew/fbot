@@ -1,12 +1,21 @@
 import tweepy
 import logging
-from config import create_api
 import time
-import os
+from os import environ
 import random as rn
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+
+consumer_key = environ['API_KEY']
+consumer_secret = environ['API_SECRET_KEY']
+access_token = environ['ACCESS_TOKEN']
+access_token_secret = environ['ACCESS_TOKEN_SECRET']
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
 
 def check_mentions(api, since_id):
     quotes = open("quotes.txt", "r", encoding='utf-8')
@@ -61,7 +70,6 @@ def follow_followers(api, m):
         return True
 
 def mentions_main():
-    api = create_api()
     since_id = 1
     while True:
         since_id = check_mentions(api, since_id)
