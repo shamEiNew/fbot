@@ -2,7 +2,7 @@ import tweepy
 import logging
 from config import create_api
 import time
-import credentials
+import os
 import random as rn
 
 logging.basicConfig(level=logging.INFO)
@@ -29,7 +29,7 @@ def check_mentions(api, since_id):
             if api.get_status(tweet.id).user.id_str != '1164161687450112000':
                 logger.info(f"Answering to {tweet.user.name}")
                 try:
-                    api.update_status(status="u are absolutely amazing \U0001F970",
+                    api.update_status(status="{tweet.user.name} u are absolutely amazing \U0001F970",
                      in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
                 except tweepy.TweepError:
                     logger.error(f"status duplicate")
