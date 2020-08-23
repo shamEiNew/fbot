@@ -8,14 +8,21 @@ import random as rn
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 
-consumer_key = environ['API_KEY']
-consumer_secret = environ['API_SECRET_KEY']
-access_token = environ['ACCESS_TOKEN']
-access_token_secret = environ['ACCESS_TOKEN_SECRET']
+consumer_key = "qR2I353OwXANf1RhsWg223T0l"
+consumer_secret = "CZV5CNfGWSqOLvuyZcx0y36JmlLfeBIJyWyGPlhPLVPPMYb2Jw"
+access_token = "1296440180501393408-lKxcrko2KRcXpGrjc6u0vQ2D2nrVXq"
+access_token_secret = "pwUYPmuk0xTCMbu0qHuhW1mbZLiCZ34I9buNaU1uhUz7g"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+
+
+try:
+    api.verify_credentials()
+except Exception as e:
+    logger.error("Error creating API", exc_info=True)
+    raise e
 
 def check_mentions(api, since_id):
     quotes = open("quotes.txt", "r", encoding='utf-8')
@@ -24,8 +31,7 @@ def check_mentions(api, since_id):
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
         new_since_id = max(tweet.id, new_since_id)
-        m = api.get_status(tweet.id).user.screen_name
-        if follow_followers(api, m) == True:
+        if follow_followers(api, api.get_status(tweet.id).user.screen_name) == True:
             try:
                 logger.info(f"following {m}")
                 api.create_friendship(m)
@@ -34,11 +40,12 @@ def check_mentions(api, since_id):
 
         if tweet.in_reply_to_status_id is not None:
             continue
-        if api.me().screen_name not in prev_tweets(api, m, str(tweet.id)):
+        if api.me().screen_name not in prev_tweets(api, api.get_status(tweet.id).user.screen_name, str(tweet.id)):
+
             if api.get_status(tweet.id).user.id_str != '1164161687450112000':
                 logger.info(f"Answering to {tweet.user.name}")
                 try:
-                    api.update_status(status="{tweet.user.name} u are absolutely amazing \U0001F970",
+                    api.update_status(status="Humpty dumpty \U0001F970",
                      in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
                 except tweepy.TweepError:
                     logger.error(f"status duplicate")
@@ -49,7 +56,7 @@ def check_mentions(api, since_id):
                     in_reply_to_status_id=tweet.id,auto_populate_reply_metadata = True)
                 except tweepy.TweepError:
                     logger.error(f"status duplicate")
-            m = ''
+        m = ''
     quotes.close()
     return new_since_id
 
@@ -74,7 +81,8 @@ def mentions_main():
     while True:
         since_id = check_mentions(api, since_id)
         logger.info("Waiting...")
-        time.sleep(60*60*4)
+        time.sleep(60*2)
 
 if (__name__ == "__main__"):
+    api.rate_limit_status()
     mentions_main()
