@@ -21,7 +21,7 @@ def check_mentions(api, since_id):
                 logger.info(f"following m")
                 api.create_friendship(m)
             except tweepy.TweepError:
-                logger.info("you can't follow your self!")
+                logger.info(f"you can't follow {m}!")
 
         if tweet.in_reply_to_status_id is not None:
             continue
@@ -65,7 +65,7 @@ def mentions_main():
     since_id = 1
     while True:
         since_id = check_mentions(api, since_id)
-        logger.info("Main Mentions Waiting...")
+        logger.info("Waiting...")
         time.sleep(15)
 
 if (__name__ == "__main__"):
