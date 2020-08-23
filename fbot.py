@@ -26,7 +26,7 @@ def check_mentions(api, since_id):
         if tweet.in_reply_to_status_id is not None:
             continue
         if api.me().screen_name not in prev_tweets(api, m, str(tweet.id)):
-            if api.get_status(tweet.id).user.id_str != credentials.USER_TW_ID:
+            if api.get_status(tweet.id).user.id_str != '1164161687450112000':
                 logger.info(f"Answering to {tweet.user.name}")
                 try:
                     api.update_status(status="u are absolutely amazing \U0001F970",
