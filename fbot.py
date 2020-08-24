@@ -3,6 +3,7 @@ import logging
 import time
 from os import environ
 import random as rn
+import datetime
 
 
 logging.basicConfig(level=logging.INFO)
@@ -64,7 +65,7 @@ def check_mentions(api, keywords, since_id, T):
                 else:
                     try:
                         T += 1
-                        api.update_status(status=str(T)+"  "+rej[rn.randint(0, len(rej))]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
+                        api.update_status(status=str(T)+": "+rej[rn.randint(0, len(rej))]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
                     except:
                         logger.error(f"status duplicate ---02")
             else:
@@ -110,10 +111,11 @@ def mentions_main():
 
 if (__name__ == "__main__"):
     rej = ["you beautiful but no \U0001F60D", "may be next time \U0000263A", "There can be only one, sorry",
-     "Nope", "Noooope","Hi but nayyy","nayyyyyy", "I would have but one at a time \U0001F92A"]
-    time = time.asctime()
-    try:
-        api.update_status("(^_^) still single now too......(^_^) "+ str(rn.randint(1, 500)))
-    except:
-        logger.info('Status duplicate ---04')
+     "Nope", "Noooope","Hi! but nayyy","nayyyyyy", "I would have but one at a time \U0001F92A"]
+    if api.home_timeline()[0].created_at.day != datetime.datetime.today().day:
+        try:
+            api.update_status("(^_^) still single now too......(^_^) "+ str(rn.randint(1, 500)))
+        except:
+            logger.info('Status duplicate ---04')
+    
     mentions_main()
