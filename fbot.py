@@ -114,6 +114,7 @@ if (__name__ == "__main__"):
     except FileNotFoundError as fr:
         logger.error("File Doesn't Exist")
         raise fr
-    quotes.close()
     quotes_list = quotes.readlines()
+    
+    quotes.close()
     mentions_main()
