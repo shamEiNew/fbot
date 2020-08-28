@@ -20,5 +20,4 @@ def song_pub(search_input):
     songs_f = {}                         #Definig dict for our list of songs with names and links.
     for i in range(0, len(songs)):
         songs_f[songs[i]['name']]=songs[i]['external_urls']['spotify']
-    print(songs_f)
     return random.choice(list(songs_f.values()))
