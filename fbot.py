@@ -69,7 +69,7 @@ def check_mentions(api, keywords, since_id, T):
                     try:
                         logger.info(f"Answering to my user: a music")
                         api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
-                        song_link = mr.song_pub(tweet.text.replace('@TheCrushBot','').replace('\U00002764','').strip())),
+                        song_link = mr.song_pub(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').replace('\U00002764','').strip())),
                         in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
                     except:
                         logger.info(f'Status duplicate ---03')
