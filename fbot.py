@@ -49,7 +49,7 @@ def check_mentions(api, keywords, since_id, T):
             continue
         if api.me().screen_name not in prev_tweets(api,
          api.get_status(tweet.id).user.screen_name, str(tweet.id)):
-            if api.get_status(tweet.id).user.id_str != '1281216898991108097':
+            if api.get_status(tweet.id).user.id_str != environ['MY_USER']:
                 logger.info(f"Answering to {tweet.user.name}")
                 if any(keyword in tweet.text.lower() for keyword in keywords) == False:
                     try:
