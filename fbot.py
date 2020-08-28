@@ -32,11 +32,11 @@ def check_mentions(api, keywords, since_id, T):
     new_since_id = since_id
     for tweet in tweepy.Cursor(api.mentions_timeline,
         since_id=since_id).items():
-        #try:
-        #    api.create_favorite(tweet.id)
-        #except tweepy.error.TweepError:
-        #    logger.error(f"Already favorited",exc_info=True)
-        #    print('Already Liked')
+        """try:
+           api.create_favorite(tweet.id)
+        except tweepy.error.TweepError:
+           logger.error(f"Already favorited",exc_info=True)
+           print('Already Liked')"""
         new_since_id = max(tweet.id, new_since_id)
         if follow_followers(api, api.get_status(tweet.id).user.screen_name) == True:
             try:
@@ -105,14 +105,15 @@ def mentions_main():
     while True:
         since_id, T = check_mentions(api, ['are you my crush','you my crush','crush','who is your crush','crushh', 'whos your crush'],since_id, T)
         logger.info("Waiting...")
-        time.sleep(60*60*12)
+        time.sleep(60*60*3)
 
 if (__name__ == "__main__"):
     rej = ["you beautiful but no \U0001F60D", "may be next time \U0000263A", "There can be only one, sorry","Nope", "Noooope","Hi but nayyy","nayyyyyy", "I would have but one at a time \U0001F92A"]
     try:
-        quotes = open("fbot/quotes.txt", "r", encoding='utf-8')
+        quotes = open("quotes.txt", "r", encoding='utf-8')
     except FileNotFoundError as fr:
         logger.error("File Doesn't Exist")
         raise fr
+    quotes.close()
     quotes_list = quotes.readlines()
     mentions_main()
