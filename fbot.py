@@ -65,7 +65,7 @@ def check_mentions(api, keywords, since_id, T):
                     except:
                         logger.error(f"status duplicate ---02")
             else:
-                if "\U00002764" in tweet.text and len(tweet.text.replace('@TheCrushBot','').replace('\U00002764','').strip())>0:
+                if '\u2764\ufe0f' in tweet.text and len(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').strip())>0:
                     try:
                         logger.info(f"Answering to my user: a music")
                         api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
