@@ -6,26 +6,24 @@ import random as rn
 import datetime
 import music_recommend as mr
 
-
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
+def create_api():
+    consumer_key = environ['API_KEY']
+    consumer_secret = environ['API_SECRET_KEY']
+    access_token = environ['ACCESS_TOKEN']
+    access_token_secret = environ['ACCESS_TOKEN_SECRET']
 
-consumer_key = environ['API_KEY']
-consumer_secret = environ['API_SECRET_KEY']
-access_token = environ['ACCESS_TOKEN']
-access_token_secret = environ['ACCESS_TOKEN_SECRET']
-
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
-
-
-try:
-    api.verify_credentials()
-except Exception as e:
-    logger.error("Error creating API", exc_info=True)
-    raise e
-logger.info("API created")
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True)
+    try:
+        api.verify_credentials()
+    except Exception as e:
+        logger.error("Error creating API", exc_info=True)
+        raise e
+    logger.info("API created")
+    return api
 
 def check_mentions(api, keywords, since_id, T):
     logger.info("Retrieving mentions")
@@ -47,8 +45,7 @@ def check_mentions(api, keywords, since_id, T):
 
         if tweet.in_reply_to_status_id is not None:
             continue
-        if api.me().screen_name not in prev_tweets(api,
-         api.get_status(tweet.id).user.screen_name, str(tweet.id)):
+        if api.me().screen_name not in prev_tweets(api,api.get_status(tweet.id).user.screen_name, str(tweet.id)):
             if api.get_status(tweet.id).user.id_str != environ['MY_USER']:
                 logger.info(f"Answering to {tweet.user.name}")
                 if any(keyword in tweet.text.lower() for keyword in keywords) == False:
@@ -61,9 +58,9 @@ def check_mentions(api, keywords, since_id, T):
                 else:
                     try:
                         T += 1
-                        api.update_status(status=str(T)+":sowwwwyyy I give songs to only my fav person \U0001F605 yikes!!!"+"  "+ rej[rn.randint(0, len(rej)-1)]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
+                        api.update_status(status=str(T)+"  :sowwwwyyy I give songs to only my fav person \U0001F605 yikes!!!"+"  "+ rej[rn.randint(0, len(rej)-1)]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
                     except:
-                        logger.error(f"status duplicate ---02")
+                        logger.error(f"status duplicate for different user")
             else:
                 if '\u2764\ufe0f' in tweet.text and len(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').strip())>0:
                     try:
@@ -72,7 +69,7 @@ def check_mentions(api, keywords, since_id, T):
                         song_link = mr.song_pub(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').replace('\U00002764','').strip())),
                         in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
                     except:
-                        logger.info(f'Status duplicate ---03')
+                        logger.info(f'Status duplicate for my user: music')
                 else:
                     try:
                         logger.info(f"Answering to my user: a reply")
@@ -80,7 +77,7 @@ def check_mentions(api, keywords, since_id, T):
                         api.update_status(status= "luv u \U00002764" + quotes_list[rn.randint(0, len(quotes_list)-1)],
                         in_reply_to_status_id=tweet.id,auto_populate_reply_metadata = True)
                     except tweepy.TweepError:
-                        logger.error(f"status duplicate ---04")
+                        logger.error(f"status duplicate for my user: reply")
     return new_since_id, T
 
 def prev_tweets(api, name, tweet_id):
@@ -100,6 +97,7 @@ def follow_followers(api, m):
         return True
 
 def mentions_main():
+    api = create_api()
     since_id = 1
     T = 0
     while True:
