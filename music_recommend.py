@@ -13,10 +13,10 @@ def configure():
 def song_pub(search_input):
     sp = configure()
     results = sp.search(q=search_input.strip().replace(' ','%20'), type='track', market='US' and 'IN',limit = 50)
-     #Replace any space with '%20' or '+'
-    songs = results['tracks']['items']     #This is list.
+                                            #Replace any space with '%20' or '+'
+    songs = results['tracks']['items']      #This is list.
     
-    songs_f = {}                         #Definig dict for our list of songs with names and links.
+    songs_f = {}                            #Definig dict for our list of songs with names and links.
     for i in range(0, len(songs)):
         songs_f[songs[i]['name']]=songs[i]['external_urls']['spotify']
     return random.choice(list(songs_f.values()))

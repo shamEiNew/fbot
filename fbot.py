@@ -58,7 +58,7 @@ def check_mentions(api, keywords, since_id, T):
                 else:
                     try:
                         T += 1
-                        api.update_status(status=str(T)+"  :sowwwwyyy I give songs to only my fav person \U0001F605 yikes!!!"+"  "+ rej[rn.randint(0, len(rej)-1)]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
+                        api.update_status(status=str(T)+"  :sowwwwyyy I give songs to only my fav person as of now \U0001F605 yikes!!!"+"  "+ rej[rn.randint(0, len(rej)-1)]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
                     except:
                         logger.error(f"status duplicate for different user")
             else:
@@ -74,7 +74,7 @@ def check_mentions(api, keywords, since_id, T):
                     try:
                         logger.info(f"Answering to my user: a reply")
                         T += 1
-                        api.update_status(status= "luv u \U00002764" + quotes_list[rn.randint(0, len(quotes_list)-1)],
+                        api.update_status(status= "luv u \U00002764 " + quotes_list[rn.randint(0, len(quotes_list)-1)],
                         in_reply_to_status_id=tweet.id,auto_populate_reply_metadata = True)
                     except tweepy.TweepError:
                         logger.error(f"status duplicate for my user: reply")
@@ -103,16 +103,17 @@ def mentions_main():
     while True:
         since_id, T = check_mentions(api, ['are you my crush','you my crush','crush','who is your crush','crushh', 'whos your crush'],since_id, T)
         logger.info("Waiting...")
-        time.sleep(60*60*3)
+        time.sleep(60*60*12)
 
 if (__name__ == "__main__"):
     rej = ["you beautiful but no \U0001F60D", "may be next time \U0000263A", "There can be only one, sorry","Nope", "Noooope","Hi but nayyy","nayyyyyy", "I would have but one at a time \U0001F92A"]
+    
     try:
         quotes = open("quotes.txt", "r", encoding='utf-8')
     except FileNotFoundError as fr:
         logger.error("File Doesn't Exist")
         raise fr
     quotes_list = quotes.readlines()
-    
     quotes.close()
+    
     mentions_main()
