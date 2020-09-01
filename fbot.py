@@ -56,13 +56,21 @@ def check_mentions(api, keywords, since_id, T):
                     except tweepy.TweepError:
                         logger.error(f"status duplicate ---01")
                 else:
-                    try:
-                        T += 1
-                        api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
-                        song_link = mr.song_pub(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').replace('\U00002764','').strip())),
-                        in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
-                    except:
-                        logger.error(f"status duplicate for different user")
+                    if '\u2764\ufe0f' in tweet.text and len(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').strip())>0:
+                        try:
+                            T += 1
+                            api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
+                            song_link = mr.song_pub(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').replace('\U00002764','').strip())),
+                            in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
+                        except:
+                            logger.error(f"status duplicate for different user")
+                    else:
+                        try:
+                            T += 1
+                            api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
+                            song_link = mr.rand_song()), in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
+                        except:
+                            logger.error(f"status duplicate for different user")
             else:
                 if '\u2764\ufe0f' in tweet.text and len(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').strip())>0:
                     try:
@@ -105,7 +113,7 @@ def mentions_main():
     while True:
         since_id, T = check_mentions(api, ['are you my crush','you my crush','crush','who is your crush','crushh', 'whos your crush'],since_id, T)
         logger.info("Waiting...")
-        time.sleep(60*60*12)
+        time.sleep(60*60*5)
 
 if (__name__ == "__main__"):
     rej = ["you beautiful but no \U0001F60D", "may be next time \U0000263A", "There can be only one, sorry","Nope", "Noooope","Hi but nayyy","nayyyyyy", "I would have but one at a time \U0001F92A"]
