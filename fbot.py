@@ -58,7 +58,9 @@ def check_mentions(api, keywords, since_id, T):
                 else:
                     try:
                         T += 1
-                        api.update_status(status=str(T)+"  :sowwwwyyy I give songs to only my fav person as of now \U0001F605 yikes!!!"+"  "+ rej[rn.randint(0, len(rej)-1)]  , in_reply_to_status_id=tweet.id, auto_populate_reply_metadata = True)
+                        api.update_status(status = "A song for you {name} \n {song_link}".format(name=tweet.user.name,
+                        song_link = mr.song_pub(tweet.text.encode('ascii','ignore').decode('utf-8').replace('@TheCrushBot','').replace('\U00002764','').strip())),
+                        in_reply_to_status_id = tweet.id, auto_populate_reply_metadata=True)
                     except:
                         logger.error(f"status duplicate for different user")
             else:
