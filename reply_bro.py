@@ -7,7 +7,7 @@ import config
 
 def reply_bro():
     api = config.create_api()
-    for tweet in tweepy.Cursor(api.user_timeline, user_id = 67611162).items(7):
+    for tweet in tweepy.Cursor(api.user_timeline, user_id = 67611162).items(2):
         try:
             api.update_status(
                 status = tweet.text.encode('ascii','ignore').decode('utf-8') + " bro",
@@ -16,7 +16,3 @@ def reply_bro():
                 )
         except:
             pass
-        time.sleep(60*60*2)
-
-if __name__ == "__main__":
-    reply_bro()
