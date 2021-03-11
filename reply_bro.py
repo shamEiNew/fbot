@@ -1,5 +1,6 @@
 import tweepy
 import logging
+from os import environ
 import time
 import config
 
@@ -7,7 +8,6 @@ import config
 def reply_bro():
     api = config.create_api()
     for tweet in tweepy.Cursor(api.user_timeline, user_id = 67611162).items(7):
-        print(tweet.text)
         try:
             api.update_status(
                 status = tweet.text.encode('ascii','ignore').decode('utf-8') + " bro",
