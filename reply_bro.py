@@ -1,0 +1,22 @@
+import tweepy
+import logging
+import time
+import config
+
+
+def reply_bro():
+    api = config.create_api()
+    for tweet in tweepy.Cursor(api.user_timeline, user_id = 67611162).items(7):
+        print(tweet.text)
+        try:
+            api.update_status(
+                status = tweet.text.encode('ascii','ignore').decode('utf-8') + " bro",
+                in_reply_to_status_id=tweet.id,
+                auto_populate_reply_metadata = True
+                )
+        except:
+            pass
+        time.sleep(120)
+
+if __name__ == "__main__":
+    reply_bro()
