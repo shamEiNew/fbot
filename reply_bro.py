@@ -16,7 +16,7 @@ def reply_bro():
                 )
         except:
             pass
-        time.sleep(120)
+        time.sleep(60*60*2)
 
 if __name__ == "__main__":
     reply_bro()
