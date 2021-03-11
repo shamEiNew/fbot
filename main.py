@@ -6,3 +6,6 @@ def main():
         sleep_time = 60*60*3
         rb.reply_bro()
         time.sleep(sleep_time)
+
+if __name__ == "__main__":
+    main()
