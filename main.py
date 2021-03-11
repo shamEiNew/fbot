@@ -7,7 +7,7 @@ def main():
     user = 67611162
     since_id = 1
     while True:
-        sleep_time = 1
+        sleep_time = 60*60*2
         since_id = rb.reply_bro(api, since_id, user)
         time.sleep(sleep_time)
 
