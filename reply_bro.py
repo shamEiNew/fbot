@@ -10,6 +10,7 @@ def reply_bro(api, since_id, user):
     max_id = since_id
     for tweet in tweepy.Cursor(
         api.user_timeline,
+        tweet_mode = 'extended',
         user_id = user,
         since_id = since_id).items():
 
@@ -20,7 +21,7 @@ def reply_bro(api, since_id, user):
             try:
 
                 api.update_status(
-                    status = tweet.text.encode('ascii','ignore').decode('utf-8') + " bro",
+                    status = tweet.full_text.encode('ascii','ignore').decode('utf-8') + " bro",
                     in_reply_to_status_id=tweet.id,
                     auto_populate_reply_metadata = True
                     )
