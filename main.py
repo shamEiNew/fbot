@@ -8,7 +8,7 @@ logger = logging.getLogger()
 def main():
     api = config.create_api()
     user = 67611162
-    since_id = 1370204145987190788
+    since_id = 1370566030540505093
     while True:
         sleep_time = 60*60*2
         since_id = rb.reply_bro(api, since_id, user)
