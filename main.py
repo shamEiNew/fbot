@@ -1,18 +1,23 @@
 import time
 import logging
 import reply_bro as rb
+import vax as v
 import config
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger()
 def main():
     api = config.create_api()
-    user = 67611162
-    since_id = 1370566030540505093
+    user = 1196797894717632513
     while True:
-        sleep_time = 60*60*2
-        since_id = rb.reply_bro(api, since_id, user)
-        logger.info(f"{since_id}")
+        sleep_time = 10*60
+        text_update = v.vax_main()
+        print(text_update)
+        logger.info("sending dm")
+        if len(text_update) > 0 :
+            rb.reply_bro(api, user, str(text_update))
+        else:
+            pass
         logger.info("sleeping...")
         time.sleep(sleep_time)
 
